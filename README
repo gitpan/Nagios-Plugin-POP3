@@ -1,100 +1,102 @@
-Nagios-Plugin-POP3
+NAME
+    Nagios::Plugin::POP3 - Nagios plugin for checking POP3 Servers
 
-Nagios::Plugin::POP3 - Nagios plugin for checking POP3 Servers
+VERSION
+    version 1.001
 
-nagios_plugin_pop3 --help 
-    nagios_plugin_pop3 0.01
+SYNOPSIS
+    Installs the "nagios_plugin_pop3" command that can be used as:
 
-    This nagios plugin is free software, and comes with ABSOLUTELY NO WARRANTY. 
-    It may be used, redistributed and/or modified under the terms of the GNU 
-    General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
+        > nagios_plugin_pop3 --help
+        nagios_plugin_pop3 0.01
 
-    Nagios plugin for POP3 mailboxes
+        This nagios plugin is free software, and comes with ABSOLUTELY NO WARRANTY.
+        It may be used, redistributed and/or modified under the terms of the GNU
+        General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
 
-    Usage: nagios_plugin_pop3 [ -v|--verbose ] [-h|--host=<host>] [-u|--user=<user>] [-p|--password=<password>] [--count] [--delete]
-    [ -c|--critical=<critical threshold> ] 
-    [ -w|--warning=<warning threshold> ]  
+        Nagios plugin for POP3 mailboxes
 
-     -?, --usage
-       Print usage information
-     -h, --help
-       Print detailed help screen
-     -V, --version
-       Print version information
-     --extra-opts=[<section>[@<config_file>]]
-       Section and/or config_file from which to load extra options (may repeat)
-     -w, --warning=INTEGER:INTEGER
-    Minimum and maximum number of allowable result, outside of which a
-    warning will be generated.  If omitted, no warning is generated.
+        Usage: nagios_plugin_pop3 [ -v|--verbose ] [-h|--host=<host>] [-u|--user=<user>] [-p|--password=<password>] [--count] [--delete]
+        [ -c|--critical=<critical threshold> ]
+        [ -w|--warning=<warning threshold> ]
 
-     -c, --critical=INTEGER:INTEGER
-    Minimum and maximum number of the generated result, outside of
-    which a critical will be generated.
+         -?, --usage
+           Print usage information
+         -h, --help
+           Print detailed help screen
+         -V, --version
+           Print version information
+         --extra-opts=[<section>[@<config_file>]]
+           Section and/or config_file from which to load extra options (may repeat)
+         -w, --warning=INTEGER:INTEGER
+        Minimum and maximum number of allowable result, outside of which a
+        warning will be generated.  If omitted, no warning is generated.
 
-     -h, --host
-    POP3 Host (defaults to localhost.localdomain)
+         -c, --critical=INTEGER:INTEGER
+        Minimum and maximum number of the generated result, outside of
+        which a critical will be generated.
 
-     -u, --username
-    POP3 Username
+         -h, --host
+        POP3 Host (defaults to localhost.localdomain)
 
-     -p, --password
-    POP3 password
+         -u, --username
+        POP3 Username
 
-     --count
-    Count the number of messages on the server. The messages on the server are not modified.
-    This is the default action. 
+         -p, --password
+        POP3 password
 
-     --delete
-    Delete all messages on the server. Counts how many messages were deleted.
+         --count
+        Count the number of messages on the server. The messages on the server are not modified.
+        This is the default action.
 
-     -t, --timeout=INTEGER
-       Seconds before plugin times out (default: 15)
-     -v, --verbose
-       Show details for command-line debugging (can repeat up to 3 times)
-    Currently only two POP3 mailbox actions are supported: count and delete
+         --delete
+        Delete all messages on the server. Counts how many messages were deleted.
 
-    Count - Counts the number of messages on the server. The messages are not modified.
-    Delete - Deletes all messages on the server (and returns then number deleted)
+         -t, --timeout=INTEGER
+           Seconds before plugin times out (default: 15)
+         -v, --verbose
+           Show details for command-line debugging (can repeat up to 3 times)
+        Currently only two POP3 mailbox actions are supported: count and delete
 
-    THRESHOLDs for -w and -c are specified 'min:max' or 'min:' or ':max'
-    (or 'max'). If specified '@min:max', a warning status will be generated
-    if the count *is* inside the specified range.
+        Count - Counts the number of messages on the server. The messages are not modified.
+        Delete - Deletes all messages on the server (and returns then number deleted)
 
-INSTALLATION
+        THRESHOLDs for -w and -c are specified 'min:max' or 'min:' or ':max'
+        (or 'max'). If specified '@min:max', a warning status will be generated
+        if the count *is* inside the specified range.
 
-To install this module, run the following commands:
+    For example, if you have a process that sends an email to a pop3 mailbox
+    once per day, you can get nagios to check the mailbox for a single
+    message (and delete all messages) every day via:
 
-	perl Makefile.PL
-	make
-	make test
-	make install
+        nagios_plugin_pop3 -h myhost -u myname -p mypass -c 1:1 --delete
 
-SUPPORT AND DOCUMENTATION
+DESCRIPTION
+    Currently only two POP3 mailbox actions are supported: "count" and
+    "delete"
 
-After installing, you can find documentation for this module with the
-perldoc command.
+    *   count
 
-    perldoc Nagios::Plugin::POP3
+        Counts the number of messages on the server. The messages are not
+        modified.
 
-You can also look for information at:
+    *   delete
 
-    RT, CPAN's request tracker
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Nagios-Plugin-POP3
+        Deletes all messages on the server (and returns then number deleted)
 
-    AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/Nagios-Plugin-POP3
+METHODS
+  run
+    Run the plugin
 
-    CPAN Ratings
-        http://cpanratings.perl.org/d/Nagios-Plugin-POP3
+SEE ALSO
+    Nagios::Plugin
 
-    Search CPAN
-        http://search.cpan.org/dist/Nagios-Plugin-POP3/
+AUTHOR
+    Patrick Donelan <pdonelan@cpan.org>
 
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2010 by Patrick Donelan.
 
-COPYRIGHT AND LICENCE
-
-Copyright (C) 2009 Patrick Donelan
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
 

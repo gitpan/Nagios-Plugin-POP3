@@ -1,17 +1,58 @@
-use inc::Module::Install;
 
-name     'Nagios-Plugin-POP3';
-all_from 'lib/Nagios/Plugin/POP3.pm';
-author   'Patrick Donelan <pdonelan@cpan.org>';
-license  'perl';
+use strict;
+use warnings;
 
-build_requires 'Test::More';
-requires 'Nagios::Plugin';
-requires 'Mail::POP3Client';
+BEGIN { require 5.006; }
 
-install_script 'nagios_plugin_pop3';
+use ExtUtils::MakeMaker 6.31;
 
-auto_install;
 
-WriteAll;
+
+my %WriteMakefileArgs = (
+  'ABSTRACT' => 'Nagios plugin for checking POP3 Servers',
+  'AUTHOR' => 'Patrick Donelan <pdonelan@cpan.org>',
+  'BUILD_REQUIRES' => {
+    'File::Find' => '0',
+    'File::Temp' => '0',
+    'Test::More' => '0'
+  },
+  'CONFIGURE_REQUIRES' => {
+    'ExtUtils::MakeMaker' => '6.31'
+  },
+  'DISTNAME' => 'Nagios-Plugin-POP3',
+  'EXE_FILES' => [
+    'bin/nagios_plugin_pop3'
+  ],
+  'LICENSE' => 'perl',
+  'NAME' => 'Nagios::Plugin::POP3',
+  'PREREQ_PM' => {
+    'Mail::POP3Client' => '0',
+    'Nagios::Plugin' => '0'
+  },
+  'VERSION' => '1.001',
+  'test' => {
+    'TESTS' => 't/*.t'
+  }
+);
+
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
+}
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
 
